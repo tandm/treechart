@@ -20,7 +20,7 @@
           v-bind:start='oldtotal'
           v-bind:end='total'
           :duration='120'
-          v-bind:options='optionstotal'
+          v-bind:options='options'
         ></i-count-up>
         </div>
       </div>
@@ -54,38 +54,16 @@ export default {
         prefix: '',
         suffix: ''
       },
-      optionstotal: {
-        useEasing: true,
-        useGrouping: true,
-        separator: ',',
-        decimal: '.',
-        prefix: '',
-        suffix: 'k'
-      }
     }
   },
   created () {
     this.startPolling()
   },
   methods: {
-    callback(ins) {
-      // this.poll = ins.endVal;
-    },
     fetchData(first) {
       this.$http({ url: `${config.baseUrl}poll`, method: 'GET', emulateJSON: true })
         .then((response) => {
           let count = _.toNumber(response.body.totalPollHits);
-          // if (count > 10000 && count < 1000000) {
-          //   count = count / 1000;
-          //   this.options.suffix = 'к';
-          // } else if (count > 1000000) {
-          //   count = count / 1000000;
-          //   this.options.suffix = 'м';
-          //   this.decimals = 1;
-          // } else {
-          //   this.decimals = 0;
-          //   this.options.suffix = '';
-          // }
 
           if (first) {
             this.poll = count - count / 10;
@@ -96,14 +74,6 @@ export default {
           if (this.end !== count && this.end < count) {
             const ctx = _.floor((count - this.end) / 120);
             this.total = _.floor(ctx / 1000);
-          }
-
-          if (this.total > 200) {
-            this.height = '40vh';
-          } else if (this.total > 300) {
-            this.height = '50vh';
-          } else if (this.total > 400) {
-            this.height = '60vh';
           }
 
           this.end = count;
