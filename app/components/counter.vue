@@ -71,7 +71,7 @@ export default {
             this.total = 240;
           }
 
-          if (this.end !== count && this.end < count) {
+          if (this.end !== count) {
             const ctx = _.floor((count - this.end) / 120);
             this.total = _.floor(ctx / 1000);
           }
